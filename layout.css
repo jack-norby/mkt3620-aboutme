@@ -1,246 +1,227 @@
-/*
-  layout.css — three-column page frame
-  -------------------------------------
-  Structure this CSS expects in your HTML:
-
-    <div class="site-frame">
-      <header class="site-header">
-        <div class="site-logo">...</div>
-        <div class="site-graphic">...</div>
-      </header>
-
-      <nav class="nav-primary">...</nav>
-      <nav class="nav-secondary">...</nav>          (optional)
-
-      <div class="site-body">
-        <aside class="nav-local">...</aside>          (optional left column)
-        <main class="content-main">
-          <div class="hero-image">...</div>
-          <div class="content-text">...</div>
-        </main>
-        <aside class="sidebar-sticky">...</aside>      (optional right column)
-      </div>
-
-      <footer class="site-footer">...</footer>
-    </div>
-
-  Any of nav-local / sidebar-sticky can be omitted — the grid
-  re-flows automatically (see the :has() fallback rules below).
-*/
-
-:root{
-  --paper:#EDEAE0;
-  --frame-bg:#F7F5EE;
-  --ink:#1C2321;
-  --green:#2F4538;
-  --gold:#C89B3C;
-  --clay:#8B5E3C;
-  --line: rgba(28,35,33,0.16);
-  --frame-max-w: 1120px;
+/* ==========================================================================
+   Layout tokens
+   ========================================================================== */
+:root {
+  --edge-margin: 10vw;          /* 10% of the screen on each side */
+  --bg-cream: #f5f0e6;          /* background / body area */
+  --content-bg: #ffffff;        /* the framed content area */
+  --line-color: #000000;        /* wireframe-style borders */
+  --sidebar-width: 200px;
+  --sticky-width: 200px;
+  --gap: 0;
 }
 
-*{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:'Work Sans', sans-serif;
-  line-height:1.6;
+* {
+  box-sizing: border-box;
 }
 
-/* ---------- Outer frame ---------- */
-/* The flanking whitespace in the wireframe ("Body or background area")
-   is just the page background showing on either side of this frame. */
-.site-frame{
-  max-width:var(--frame-max-w);
-  margin:0 auto;
-  background:var(--frame-bg);
-  border-left:1px solid var(--line);
-  border-right:1px solid var(--line);
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-cream);
+  font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
 }
 
-/* ---------- Header: logo + informational graphic ---------- */
-.site-header{
-  display:grid;
-  grid-template-columns:220px 1fr;
-  border-bottom:1px solid var(--line);
-}
-.site-logo{
-  display:flex;
-  align-items:center;
-  padding:22px 28px;
-  border-right:1px solid var(--line);
-  font-family:'Newsreader', serif;
-  font-size:28px;
-}
-.site-graphic{
-  display:flex;
-  align-items:center;
-  padding:22px 28px;
-  color:var(--clay);
-  font-size:14px;
+/* ==========================================================================
+   Page frame — 10% cream background on the left and right edges,
+   with the site content boxed in the remaining 80%.
+   ========================================================================== */
+.page {
+  width: calc(100% - (var(--edge-margin) * 2));
+  margin: 0 auto;
+  padding-bottom: var(--edge-margin);
+  background: var(--content-bg);
+  border-left: 1px solid var(--line-color);
+  border-right: 1px solid var(--line-color);
+  min-height: 100vh;
 }
 
-@media (max-width:720px){
-  .site-header{ grid-template-columns:1fr; }
-  .site-logo{ border-right:none; border-bottom:1px solid var(--line); }
+/* ==========================================================================
+   Header: logo + informational graphic, primary nav, secondary nav
+   ========================================================================== */
+.site-header {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  border-bottom: 1px solid var(--line-color);
 }
 
-/* ---------- Primary / secondary nav bars (full width) ---------- */
-.nav-primary,
-.nav-secondary{
-  border-bottom:1px solid var(--line);
-  padding:12px 28px;
-  display:flex;
-  align-items:center;
-  gap:24px;
-  flex-wrap:wrap;
-  font-size:15px;
-}
-.nav-secondary{ font-size:13.5px; color:var(--clay); }
-
-.nav-primary a,
-.nav-secondary a{
-  color:var(--ink);
-  text-decoration:none;
-  border-bottom:1px solid transparent;
-}
-.nav-primary a:hover,
-.nav-secondary a:hover{ border-bottom-color:var(--ink); }
-
-/* ---------- Body: left nav / main content / sticky sidebar ---------- */
-.site-body{
-  display:grid;
-  grid-template-columns:200px minmax(0,1fr) 240px;
-  flex:1;
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  border-right: 1px solid var(--line-color);
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-/* Drop a column cleanly if that region isn't present in the markup */
-.site-body:has(> .nav-local:only-child),
-.site-body:not(:has(.nav-local)):not(:has(.sidebar-sticky)){
-  grid-template-columns:1fr;
-}
-.site-body:not(:has(.nav-local)):has(.sidebar-sticky){
-  grid-template-columns:minmax(0,1fr) 240px;
-}
-.site-body:has(.nav-local):not(:has(.sidebar-sticky)){
-  grid-template-columns:200px minmax(0,1fr);
+.header-right {
+  display: flex;
+  flex-direction: column;
 }
 
-.nav-local{
-  padding:28px 22px;
-  border-right:1px solid var(--line);
-  font-size:14.5px;
-}
-.nav-local h3{
-  font-family:'Newsreader', serif;
-  font-weight:500;
-  font-size:15px;
-  margin:0 0 14px;
-}
-.nav-local ul{
-  list-style:none;
-  margin:0 0 22px;
-  padding:0;
-}
-.nav-local li{ margin-bottom:10px; }
-.nav-local a{
-  color:var(--ink);
-  text-decoration:none;
-  border-bottom:1px solid transparent;
-}
-.nav-local a:hover{ border-bottom-color:var(--gold); }
-
-.content-main{
-  padding:28px;
-  min-width:0;
-}
-.hero-image{
-  border:1px solid var(--line);
-  min-height:200px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--clay);
-  font-size:14px;
-  margin-bottom:26px;
-  overflow:hidden;
-}
-.hero-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.content-text{
-  max-width:65ch;
-  font-size:16.5px;
-}
-.content-text h2{
-  font-family:'Newsreader', serif;
-  font-weight:500;
-  font-size:24px;
-  margin:0 0 14px;
+.header-graphic {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  border-bottom: 1px solid var(--line-color);
+  min-height: 4rem;
 }
 
-.sidebar-sticky{
-  padding:28px 22px;
-  border-left:1px solid var(--line);
-  font-size:14.5px;
-}
-.sidebar-sticky h3{
-  font-family:'Newsreader', serif;
-  font-weight:500;
-  font-size:15px;
-  margin:0 0 14px;
-}
-.sidebar-sticky ul{
-  list-style:none;
-  margin:0 0 24px;
-  padding:0;
-}
-.sidebar-sticky li{
-  padding:8px 0;
-  border-top:1px solid var(--line);
-}
-.sidebar-sticky li:first-child{ border-top:none; }
-
-@media (min-width:721px){
-  .sidebar-sticky{ position:sticky; top:0; align-self:start; }
+/* Primary / secondary nav bars (top, full width of header-right) */
+.nav-bar {
+  border-bottom: 1px solid var(--line-color);
+  text-align: center;
 }
 
-@media (max-width:900px){
-  .site-body,
-  .site-body:has(.nav-local),
-  .site-body:has(.sidebar-sticky){
-    grid-template-columns:1fr;
+.nav-bar:last-child {
+  border-bottom: none;
+}
+
+.nav-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-bar a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.9rem;
+}
+
+.nav-bar a:hover,
+.nav-bar a[aria-current="page"] {
+  text-decoration: underline;
+}
+
+.nav-bar--secondary {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+/* ==========================================================================
+   Body: primary/secondary nav sidebar, main content, sticky sidebar
+   ========================================================================== */
+.site-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--sticky-width);
+  min-height: 60vh;
+}
+
+.sidebar-nav {
+  border-right: 1px solid var(--line-color);
+  padding: 1.25rem 1rem;
+}
+
+.sidebar-nav h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 0.4rem;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.9rem;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a[aria-current="page"] {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.main-content {
+  border-right: 1px solid var(--line-color);
+  padding: 1.5rem;
+}
+
+.hero-image {
+  border: 1px solid var(--line-color);
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.main-content h1 {
+  font-size: 1.4rem;
+  margin: 0 0 0.75rem;
+}
+
+.main-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+.sticky-content {
+  padding: 1.25rem 1rem;
+}
+
+.sticky-content h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+}
+
+.sticky-content ul {
+  margin: 0 0 1.5rem;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--line-color);
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+/* ==========================================================================
+   Responsive: stack the three columns below tablet width
+   ========================================================================== */
+@media (max-width: 800px) {
+  :root {
+    --edge-margin: 4vw;
   }
-  .nav-local,
-  .sidebar-sticky{
-    border-right:none;
-    border-left:none;
-    border-top:1px solid var(--line);
-  }
-  .sidebar-sticky{ position:static; }
-}
 
-/* ---------- Footer ---------- */
-.site-footer{
-  border-top:1px solid var(--line);
-  padding:20px 28px;
-  font-size:13px;
-  color:var(--clay);
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
+  .site-header {
+    grid-template-columns: 1fr;
+  }
+
+  .logo {
+    border-right: none;
+    border-bottom: 1px solid var(--line-color);
+  }
+
+  .site-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-nav,
+  .main-content {
+    border-right: none;
+    border-bottom: 1px solid var(--line-color);
+  }
 }
-.site-footer a{
-  color:var(--clay);
-  text-decoration:none;
-  border-bottom:1px solid var(--line);
-}
-.site-footer a:hover{ color:var(--ink); border-color:var(--ink); }
