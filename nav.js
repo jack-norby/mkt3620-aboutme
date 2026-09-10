@@ -15,7 +15,7 @@
 
 const SITE_NAV = {
   primary: [
-    { label: "Home", href: "/" },
+    { label: "Home", href: "index.html" },
     { label: "Product", href: "product.html" },
     { label: "Services", href: "/services.html" },
     { label: "Blog", href: "/blog.html" },
