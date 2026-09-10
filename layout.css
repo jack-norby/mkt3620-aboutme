@@ -1,14 +1,13 @@
 /* ==========================================================================
-   Layout tokens
+   Layout Tokens & Base Styles
    ========================================================================== */
 :root {
-  --edge-margin: 10vw;          /* 10% of the screen on each side */
-  --bg-cream: #f5f0e6;          /* background / body area */
-  --content-bg: #ffffff;        /* the framed content area */
-  --line-color: #000000;        /* wireframe-style borders */
+  --edge-margin: 10vw;
+  --bg-cream: #f5f0e6;
+  --content-bg: #ffffff;
+  --line-color: #000000;
   --sidebar-width: 200px;
   --sticky-width: 200px;
-  --gap: 0;
 }
 
 * {
@@ -24,8 +23,7 @@ html, body {
 }
 
 /* ==========================================================================
-   Page frame — 10% cream background on the left and right edges,
-   with the site content boxed in the remaining 80%.
+   Page Frame
    ========================================================================== */
 .page {
   width: calc(100% - (var(--edge-margin) * 2));
@@ -38,7 +36,7 @@ html, body {
 }
 
 /* ==========================================================================
-   Header: logo + informational graphic, primary nav, secondary nav
+   Header
    ========================================================================== */
 .site-header {
   display: grid;
@@ -52,8 +50,13 @@ html, body {
   justify-content: center;
   padding: 1rem;
   border-right: 1px solid var(--line-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
+}
+
+.logo a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .logo img {
@@ -76,7 +79,7 @@ html, body {
   min-height: 4rem;
 }
 
-/* Primary / secondary nav bars (top, full width of header-right) */
+/* Nav Bars */
 .nav-bar {
   border-bottom: 1px solid var(--line-color);
   text-align: center;
@@ -105,6 +108,7 @@ html, body {
 .nav-bar a:hover,
 .nav-bar a[aria-current="page"] {
   text-decoration: underline;
+  font-weight: 600;
 }
 
 .nav-bar--secondary {
@@ -113,7 +117,7 @@ html, body {
 }
 
 /* ==========================================================================
-   Body: primary/secondary nav sidebar, main content, sticky sidebar
+   Site Body & Columns
    ========================================================================== */
 .site-body {
   display: grid;
@@ -166,6 +170,7 @@ html, body {
   justify-content: center;
   color: #555;
   margin-bottom: 1.5rem;
+  background-color: #fafafa;
 }
 
 .main-content h1 {
@@ -196,6 +201,83 @@ html, body {
 }
 
 /* ==========================================================================
+   Product Page Styles
+   ========================================================================== */
+.page-title {
+  border: 1px solid var(--line-color);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.page-title h1 {
+  margin: 0 0 10px;
+}
+
+.page-title p {
+  margin: 0;
+}
+
+.product-image {
+  border: 1px solid var(--line-color);
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.product-section {
+  margin-bottom: 30px;
+}
+
+.product-section h2 {
+  border-bottom: 1px solid var(--line-color);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.feature {
+  border: 1px solid var(--line-color);
+  padding: 16px;
+}
+
+.feature h3 {
+  margin-top: 0;
+}
+
+.pricing {
+  border: 1px solid var(--line-color);
+  padding: 24px;
+  text-align: center;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 24px;
+  border: 1px solid var(--line-color);
+  text-decoration: none;
+  color: #000;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.button:hover {
+  background: var(--line-color);
+  color: #fff;
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 .site-footer {
@@ -206,14 +288,16 @@ html, body {
 }
 
 /* ==========================================================================
-   Responsive: stack the three columns below tablet width
+   Responsive
    ========================================================================== */
 @media (max-width: 800px) {
   :root {
     --edge-margin: 4vw;
   }
 
-  .site-header {
+  .site-header,
+  .site-body,
+  .features {
     grid-template-columns: 1fr;
   }
 
@@ -222,125 +306,9 @@ html, body {
     border-bottom: 1px solid var(--line-color);
   }
 
-  .site-body {
-    grid-template-columns: 1fr;
-  }
-
   .sidebar-nav,
   .main-content {
     border-right: none;
     border-bottom: 1px solid var(--line-color);
   }
-}
-
-/* Product Page */
-
-.page-title {
-    border: 1px solid #222;
-    padding: 30px;
-    margin-bottom: 20px;
-}
-
-.page-title h1 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.page-title p {
-    margin-bottom: 0;
-}
-
-.product-image {
-    border: 1px solid #222;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-
-.product-placeholder {
-    text-align: center;
-}
-
-.product-placeholder h2 {
-    margin-bottom: 8px;
-}
-
-.product-placeholder p {
-    margin: 0;
-}
-
-.product-section {
-    margin-bottom: 30px;
-}
-
-.product-section h2 {
-    border-bottom: 1px solid #222;
-    padding-bottom: 8px;
-    margin-bottom: 15px;
-}
-
-.product-section p {
-    line-height: 1.6;
-}
-
-.features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.feature {
-    border: 1px solid #222;
-    padding: 20px;
-}
-
-.feature h3 {
-    margin-top: 0;
-}
-
-.feature p {
-    margin-bottom: 0;
-}
-
-.benefits {
-    line-height: 2;
-}
-
-.pricing {
-    border: 1px solid #222;
-    padding: 25px;
-    text-align: center;
-}
-
-.pricing h2 {
-    border-bottom: none;
-}
-
-.price {
-    font-size: 36px;
-    font-weight: bold;
-    margin: 20px 0;
-}
-
-.button {
-    display: inline-block;
-    padding: 10px 25px;
-    border: 1px solid #222;
-    text-decoration: none;
-    color: #000;
-}
-
-.button:hover {
-    background: #222;
-    color: #fff;
-}
-
-@media (max-width: 800px) {
-
-    .features {
-        grid-template-columns: 1fr;
-    }
-
 }
